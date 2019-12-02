@@ -1,10 +1,4 @@
-enum OpCode {
-    Add = 1,
-    Multiply = 2,
-    HaltAndCatchFire = 99,
-}
-
-use ToString;
+use crate::failure::ResultExt;
 
 pub fn apply<F>(index: usize, program: &mut Vec<i64>, operation: F)
 where
@@ -19,14 +13,18 @@ where
 pub fn solve(input: &str) -> Result<String, failure::Error> {
     let mut program: Vec<i64> = input
         .split(',')
-        .map(|v| -> Result<i64, failure::Error> { v.parse::<i64>().map_err(failure::Error::from) })
+        .map(|v| -> Result<i64, failure::Error> {
+            v.parse::<i64>()
+                .context(format!("Digit:{}", v))
+                .map_err(failure::Error::from)
+        })
         .collect::<Result<Vec<i64>, failure::Error>>()?;
     let mut i = 0;
     let sum = |a, b| -> i64 { a + b };
     let mult = |a, b| -> i64 { a * b };
-    let get_vals = while i < program.len() {
+    while i < program.len() {
         let v = program[i];
-        let s = match v {
+        match v {
             1 => apply(i, &mut program, sum),
             2 => apply(i, &mut program, mult),
             99 => {
@@ -42,9 +40,9 @@ pub fn solve(input: &str) -> Result<String, failure::Error> {
                     }))
             }
             _ => return Err(format_err!("Error, unexpected int")),
-        };
+        }
         i += 4;
-    };
+    }
     Err(format_err!("Something Strange happened."))
 }
 
