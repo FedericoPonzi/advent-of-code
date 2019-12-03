@@ -5,11 +5,9 @@ extern crate failure;
 mod days;
 fn main() {
     println!("Hello, world!");
-    let p = "inputs/day2.txt";
-
+    let p = "inputs/day3.txt";
+    let input = std::fs::read_to_string(p).unwrap();
     //println!("Day 1: {}", days::day_1::solve().unwrap());
-    println!(
-        "Day 2: {}",
-        days::day_2::solve(std::fs::read_to_string(p).unwrap().as_str()).unwrap()
-    );
+    /*println!("Day 2: {}", days::day_2::solve(input).unwrap());*/
+    println!("Day 3: {}", days::day_3::solve(input).unwrap());
 }

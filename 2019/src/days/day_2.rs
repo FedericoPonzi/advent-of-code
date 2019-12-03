@@ -52,8 +52,6 @@ mod test {
 
     #[test]
     pub fn should_solve() {
-        let program = "1,9,10,3,2,3,11,0,99,30,40,50";
-
         assert_eq!(solve("1,0,0,0,99").unwrap(), "2,0,0,0,99".to_owned());
         assert_eq!(solve("2,3,0,3,99").unwrap(), "2,3,0,6,99".to_owned());
         assert_eq!(solve("2,4,4,5,99,0").unwrap(), "2,4,4,5,99,9801".to_owned());
