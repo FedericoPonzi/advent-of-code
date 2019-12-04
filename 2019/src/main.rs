@@ -9,5 +9,6 @@ fn main() {
     let input = std::fs::read_to_string(p).unwrap();
     //println!("Day 1: {}", days::day_1::solve().unwrap());
     /*println!("Day 2: {}", days::day_2::solve(input).unwrap());*/
-    println!("Day 3: {}", days::day_3::solve(input).unwrap());
+    //println!("Day 3: {}", days::day_3::solve(input).unwrap());
+    println!("Day 4: {}", days::day_4::solve("246515-739105").unwrap());
 }
