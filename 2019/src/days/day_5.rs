@@ -1,5 +1,4 @@
 use crate::failure::ResultExt;
-use itertools::Itertools;
 use std::io;
 
 enum OpCode {
@@ -26,7 +25,7 @@ impl From<i64> for OpCode {
 }
 
 pub fn get_params_from(op: i64, i: usize, program: &mut Vec<i64>, params: usize) -> Vec<i64> {
-    let mut op = match params {
+    let op = match params {
         2 => format!("{:04}", op),
         1 => format!("{:03}", op),
         _ => unreachable!(),
@@ -35,7 +34,7 @@ pub fn get_params_from(op: i64, i: usize, program: &mut Vec<i64>, params: usize)
     let get_val = |mode, val| match mode {
         '0' => program[val as usize],
         '1' => val,
-        mode => {
+        _mode => {
             //println!("Unr: {}", v);
             unreachable!();
         }

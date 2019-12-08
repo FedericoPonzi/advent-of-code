@@ -1,7 +1,5 @@
-use crate::failure::ResultExt;
 use itertools::{fold, Itertools};
-use std::collections::{HashMap, HashSet};
-use std::io;
+use std::collections::HashMap;
 
 fn dfs(start: &str, tree: &HashMap<&str, Vec<&str>>, depth: u64) -> u64 {
     tree.get(start)
