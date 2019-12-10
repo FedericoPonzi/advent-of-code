@@ -1,5 +1,9 @@
 #[macro_use]
 extern crate failure;
+#[macro_use]
+extern crate maplit;
+
+use days::day_10::solve;
 
 #[allow(dead_code)]
 mod days;
@@ -16,6 +20,10 @@ fn main() -> Result<(), failure::Error> {
     //println!("Day 5: {}", days::day_5::solve(load_input("5"))?);
     //println!("Day 6: {}", days::day_6::solve(load_input("6"))?);
     //println!("Day 7: {}", days::day_7::solve(load_input("7"))?);
-    println!("Day 8: {}", days::day_8::solve(load_input("8"), 25 * 6)?);
+    //println!("Day 8: {}", days::day_8::solve(load_input("8"), 25 * 6)?);
+    //let day = "9";
+    //println!("Day {}: {:?}", day, solve(load_input(day))?);
+    let day = "10";
+    println!("Day {}: {:?}", day, solve(load_input(day))?);
     Ok(())
 }

@@ -1,6 +1,5 @@
 use crate::days::Result;
-use itertools::{min, Itertools};
-use regex::Regex;
+use itertools::Itertools;
 
 pub fn solve(input: String, layer_size: u64) -> Result<u64> {
     let layers: Vec<String> = input

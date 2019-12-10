@@ -243,14 +243,14 @@ mod test {
     #[test]
     #[ignore]
     fn test_ops() -> Result<(), failure::Error> {
-        /// Using position mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
+        // Using position mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
         assert_eq!(run_program("3,9,8,9,10,9,4,9,99,-1,8".into(), vec![8])?, 1);
-        /// Using position mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
+        // Using position mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
         assert_eq!(run_program("3,9,8,9,10,9,4,9,99,-1,8".into(), vec![9])?, 0);
 
-        /// Using immediate mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
+        // Using immediate mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
         assert_eq!(run_program("3,3,1108,-1,8,3,4,3,99".into(), vec![8])?, 1);
-        /// Using immediate mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
+        // Using immediate mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
         assert_eq!(run_program("3,3,1108,-1,8,3,4,3,99".into(), vec![9])?, 0);
 
         Ok(())
