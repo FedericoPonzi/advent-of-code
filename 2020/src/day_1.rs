@@ -16,7 +16,7 @@ mod tests {
     use crate::shared::load_input_parsed;
 
     #[test]
-    fn day_1_sample() {
+    fn test_day_1() {
         let first_example = vec![1721, 979, 366, 299, 675, 1456];
         assert_eq!(day_1(first_example), 514579);
         let input = load_input_parsed("1");
