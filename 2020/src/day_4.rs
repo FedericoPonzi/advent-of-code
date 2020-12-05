@@ -1,7 +1,4 @@
-use regex::Captures;
 use regex::Regex;
-use std::collections::HashSet;
-use std::str::FromStr;
 
 fn day_4(input: String) -> usize {
     // This was my initial regex
@@ -17,7 +14,7 @@ fn day_4(input: String) -> usize {
                 .filter(|capture| !capture.get(0).unwrap().as_str().contains("cid"))
                 .count()
         })
-        .filter(|count| count == 7)
+        .filter(|count| *count == 7)
         .count()
 }
 
