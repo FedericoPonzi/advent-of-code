@@ -4,9 +4,9 @@ fn convert(input: String) -> u64 {
         .replace("F", "0")
         .replace("R", "1")
         .replace("L", "0");
-
     u64::from_str_radix(as_bin.as_str(), 2).unwrap()
 }
+
 fn day_5_part_2(input: Vec<String>) -> u64 {
     let seats: Vec<u64> = input.into_iter().map(convert).collect();
     let missing: Vec<u64> = (2..1023)
