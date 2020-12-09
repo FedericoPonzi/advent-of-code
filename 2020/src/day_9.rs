@@ -28,12 +28,10 @@ fn day_9(input: Vec<u64>, preamble: usize) -> u64 {
         .filter(|(index, el)| {
             let preamble_input: HashSet<u64> =
                 HashSet::from_iter(input.iter().cloned().skip(*index).take(preamble));
-            for sub in preamble_input.clone() {
-                if preamble_input.contains(&(i64::abs(*el as i64 - sub as i64) as u64)) {
-                    return false;
-                }
-            }
-            true
+            preamble_input
+                .clone()
+                .iter()
+                .all(|sub| !preamble_input.contains(&(i64::abs(*el as i64 - *sub as i64) as u64)))
         })
         .map(|(index, el)| el)
         .last()
