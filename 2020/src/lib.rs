@@ -8,3 +8,4 @@ mod day_7;
 mod day_8;
 mod shared;
 mod day_9;
+mod day_10;
