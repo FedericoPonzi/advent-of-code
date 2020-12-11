@@ -33,7 +33,7 @@ fn day_9(input: Vec<u64>, preamble: usize) -> u64 {
                 .iter()
                 .all(|sub| !preamble_input.contains(&(i64::abs(*el as i64 - *sub as i64) as u64)))
         })
-        .map(|(index, el)| el)
+        .map(|(_index, el)| el)
         .last()
         .unwrap()
 }

@@ -1,6 +1,4 @@
-use regex::internal::{Exec, Inst};
 use regex::Regex;
-use std::process::exit;
 use std::str::FromStr;
 
 #[derive(Debug, Clone)]
