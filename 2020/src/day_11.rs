@@ -77,17 +77,6 @@ fn evaluate_cell(x: isize, y: isize, table: &Vec<Vec<Cell>>) -> Cell {
         no_change => no_change,
     }
 }
-fn are_equal(before: &Vec<Vec<Cell>>, after: &Vec<Vec<Cell>>) -> bool {
-    for (b, a) in before.iter().zip(after.iter()) {
-        if b.iter()
-            .zip(a.iter())
-            .any(|(before_cell, after_cell)| before_cell != after_cell)
-        {
-            return false;
-        }
-    }
-    return true;
-}
 
 fn day_11(input: String) -> usize {
     let mut table = vec![vec![]];
@@ -109,7 +98,7 @@ fn day_11(input: String) -> usize {
                 row.push(evaluate_cell(x as isize, y as isize, &table));
             }
         }
-        if are_equal(&table, &new_table) {
+        if table == new_table {
             break;
         }
         table = new_table;

@@ -3,7 +3,7 @@
 day=${1:?Please provide a day number, like "$0 8" for day 8.}
 touch inputs/day-${day}.txt inputs/day-${day}-test.txt
 echo "mod day_${day};" >> src/lib.rs
-cat > src/day_${day}.rs <<- EOF
+cat >> src/day_${day}.rs <<- EOF
 fn day_${day}(input: Vec<String>) -> usize {
 
     unimplemented!();
