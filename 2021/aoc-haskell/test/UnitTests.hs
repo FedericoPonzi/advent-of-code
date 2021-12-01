@@ -1,12 +1,11 @@
 module Main where
 
 import Day01_test
+import Day02_test
 import Test.HUnit
-import System.IO
-all_tests = Day01_test.tests
 
-f :: [String] -> [Integer]
-f = map read
+all_tests :: [Test]
+all_tests = Day01_test.tests ++ Day02_test.tests
 
 main :: IO ()
 main = do

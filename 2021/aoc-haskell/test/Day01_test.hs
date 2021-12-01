@@ -21,11 +21,39 @@ testEmpty2 = TestCase $ assertEqual
 testDayOne = TestCase (do  handle <- openFile "inputs/day01.txt" ReadMode
                            contents <- hGetContents handle
                            let singlewords = words contents
-                               intList = convert singlewords    
-                           assertEqual "simpletest" 1527 ( day01 intList )
+                               intList = convert singlewords
+                           assertEqual "day one part one" 1527 ( day01 intList )
                            hClose handle)
+test_p1 :: [Test]
+test_p1 = [testSimple, testEmpty, testEmpty2, testDayOne]
 
+
+testPtwoSimple :: Test
+testPtwoSimple = TestCase $ assertEqual
+  "simple test" 1 ( day01p2 [1, 2, 3, 4] )
+
+testPtwoEmpty :: Test
+testPtwoEmpty = TestCase $ assertEqual
+  "simple test" 0 ( day01p2 [4, 3, 2, 1] )
+
+testPtwoEmpty2 :: Test
+testPtwoEmpty2 = TestCase $ assertEqual
+  "simple test" 0 ( day01p2 [] )
+
+
+testPtwo :: Test
+testPtwo =  TestCase (do  handle <- openFile "inputs/day01.txt" ReadMode
+                          contents <- hGetContents handle
+                          let singlewords = words contents
+                              intList = convert singlewords
+                          assertEqual "day one part two" 548 ( day01p2 intList )
+                          hClose handle)
+
+test_p2 :: [Test]
+test_p2 = [ testPtwoSimple, testPtwoEmpty, testPtwoEmpty2, testPtwo]
 
 tests :: [Test]
-tests = [testSimple, testEmpty, testEmpty2, testDayOne]
+tests = test_p1 ++ test_p2
+
+
 
