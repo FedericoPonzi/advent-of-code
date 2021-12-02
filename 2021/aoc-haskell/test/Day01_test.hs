@@ -18,6 +18,7 @@ testEmpty2 :: Test
 testEmpty2 = TestCase $ assertEqual
   "simple test" 0 ( day01 [2,1] )
 
+testDayOne :: Test
 testDayOne = TestCase (do  handle <- openFile "inputs/day01.txt" ReadMode
                            contents <- hGetContents handle
                            let singlewords = words contents
@@ -46,7 +47,7 @@ testPtwo =  TestCase (do  handle <- openFile "inputs/day01.txt" ReadMode
                           contents <- hGetContents handle
                           let singlewords = words contents
                               intList = convert singlewords
-                          assertEqual "day one part two" 548 ( day01p2 intList )
+                          assertEqual "day one part two" 1575 ( day01p2 intList )
                           hClose handle)
 
 test_p2 :: [Test]
