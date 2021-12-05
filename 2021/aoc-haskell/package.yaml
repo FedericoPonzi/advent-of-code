@@ -48,4 +48,5 @@ tests:
     dependencies:
     - aoc-haskell
     - HUnit
+    - split
 

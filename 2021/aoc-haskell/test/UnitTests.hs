@@ -2,13 +2,14 @@ module Main where
 
 import Day01_test
 import Day02_test
+import Day03_test
 import Test.HUnit
 
 
-all_tests :: [Test]
-all_tests = Day01_test.tests ++ Day02_test.tests
+allTests :: [Test]
+allTests = Day03_test.tests -- ++ Day01_test.tests ++ Day02_test.tests 
 
 main :: IO ()
 main = do
-    _ <- runTestTT $ TestList all_tests
+    _ <- runTestTT $ TestList allTests
     putStrLn "Testing is completed."
