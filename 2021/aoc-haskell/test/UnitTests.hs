@@ -3,11 +3,13 @@ module Main where
 import Day01_test
 import Day02_test
 import Day03_test
+import Day04_test
+
 import Test.HUnit
 
 
 allTests :: [Test]
-allTests = Day03_test.tests -- ++ Day01_test.tests ++ Day02_test.tests 
+allTests =   Day04_test.tests --Day03_test.tests -- ++ Day01_test.tests ++ Day02_test.tests 
 
 main :: IO ()
 main = do

@@ -28,6 +28,8 @@ library
       Day01
       Day02
       Day03
+      Day04
+      Day05
       Lib
   other-modules:
       Paths_aoc_haskell
@@ -58,6 +60,8 @@ test-suite aoc-haskell-test
       Day01_test
       Day02_test
       Day03_test
+      Day04_test
+      Day05_test
       Paths_aoc_haskell
   hs-source-dirs:
       test
