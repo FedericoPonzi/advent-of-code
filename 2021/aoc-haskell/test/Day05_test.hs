@@ -70,7 +70,7 @@ test2 =
         let coordinates = parseInput contents
         assertEqual
           "test 2"
-          7436
+          21104
           (day05p2 coordinates)
         hClose handle
         
