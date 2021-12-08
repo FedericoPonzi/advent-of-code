@@ -2,7 +2,7 @@
 
 module Day07 (day07, day07p2) where
 
-import Data.List (foldl1')
+import Data.List (foldl1', elemIndex)
 import qualified Data.Map as DataMap
 import Data.Maybe (fromJust)
 import Data.Set (fromList, toList)
@@ -25,7 +25,7 @@ calculateFuel crabsPositions computeFuel = do
   let distanceVector = [0 .. (maximum uniqPosL)]
   -- to is always >= from
   let finalDistanceVector = map (\dest -> sum (map (\from -> computeFuel crabPosDistribution from dest) uniqPosL)) distanceVector
-  foldl1' min finalDistanceVector
+  fromJust (elemIndex (foldl1' min finalDistanceVector) finalDistanceVector)
 
 day07 :: [Int] -> Int
 day07 crabsPositions = do
