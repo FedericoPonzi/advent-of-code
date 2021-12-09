@@ -30,11 +30,11 @@ safeGetPos row col m = do
 
 innerLength l = length (head l)
 
-adjancetBuilder :: Int -> Int -> [[Int]] -> Element
+adjancetBuilder :: Int -> Int -> [[Int]] -> Int
 adjancetBuilder r c m = do
   let depth = fromMaybe 9 (safeGetPos r c m)
   let index = r * innerLength m + c
-  Element index depth
+  depth
 
 north row = adjancetBuilder (row -1)
 
@@ -45,21 +45,17 @@ east row col = adjancetBuilder row (col - 1)
 weast row col = adjancetBuilder row (col + 1)
 
 
-parseInput :: String -> UGraph Element ()
+parseInput :: String -> [(Int, [Int])]
 parseInput contents = do
   let asLines :: [[Int]] = map (map read . chunksOf 1) (lines contents)
   let lines_length = length (head asLines)
   let zipped = zip [0 ..] $ map (zip [0 ..]) asLines
   let getEdges row col = do [north row col asLines, south row col asLines, east row col asLines, weast row col asLines]
   let edgeBuilder edges row col depth = do
-        let el = Element ((row * lines_length) + col) depth
-        let ret = [ el <-> (edges !! 1)
-                    ,el <-> (edges !! 1)
-                    ,el <-> (edges !! 2)
-                    ,el <-> (edges !! 3)]
+        let ret =  [(depth, [edges !! 0, edges !! 1, edges !! 2, edges !! 3])]
         ret
 
-  fromEdgesList (concatMap (\(indexRow, rowList) -> concatMap (\(indexCol, depthVal) -> edgeBuilder (getEdges indexRow indexCol) indexRow indexCol depthVal ) rowList) zipped)
+  concatMap (\(indexRow, rowList) -> concatMap (\(indexCol, depthVal) -> edgeBuilder (getEdges indexRow indexCol) indexRow indexCol depthVal ) rowList) zipped
 
 testSimple :: Test
 testSimple =
@@ -70,5 +66,18 @@ testSimple =
         assertEqual "day 08 simple" 26 (day09 pos)
     )
 
+test1 :: Test
+test1 =
+  TestCase
+    ( do
+        handle <- openFile "inputs/day09.txt" ReadMode
+        contents :: String <- hGetContents handle
+        let pos = parseInput contents
+        assertEqual
+          "test 2"
+          973499
+          (day09 pos)
+        hClose handle
+    )
 tests :: [Test]
-tests = [testSimple]
+tests = [testSimple,test1]
