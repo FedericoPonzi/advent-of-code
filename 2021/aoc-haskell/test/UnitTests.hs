@@ -1,12 +1,12 @@
 module Main where
 
-import Day08_test
+import Day09_test
 
 import Test.HUnit
 
 
 allTests :: [Test]
-allTests =  Day08_test.tests
+allTests =  Day09_test.tests
 
 main :: IO ()
 main = do
