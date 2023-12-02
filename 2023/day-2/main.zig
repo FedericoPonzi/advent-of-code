@@ -80,7 +80,35 @@ fn parse_line(allocator: mem.Allocator, input: []const u8) anyerror!Game {
     return game;
 }
 
-fn solve(input: []const u8, allocator: mem.Allocator) anyerror!u32 {
+fn count_ids(games: std.ArrayList(Game)) u32 {
+    var ret: u32 = 0;
+    for (games.items) |g| {
+        ret += g.game_id;
+    }
+    return ret;
+}
+
+fn filter_possible_games(allocator: mem.Allocator, request: Request, games: std.ArrayList(Game)) anyerror!std.ArrayList(Game) {
+    var ret = std.ArrayList(Game).init(allocator);
+    for (games.items) |g| {
+        var possible = true;
+        for (g.picks.items) |p| {
+            const is_possible = p.r <= request.r and p.g <= request.g and p.b <= request.b;
+            if (!is_possible) {
+                possible = false;
+                break;
+            }
+        }
+        if (possible) {
+            try ret.append(g);
+        }
+    }
+    return ret;
+}
+
+const Request = GamePick;
+
+fn solve(input: []const u8, allocator: mem.Allocator, request: Request) anyerror!u32 {
     var file = try std.fs.cwd().openFile(input, .{});
     defer file.close();
 
@@ -89,29 +117,51 @@ fn solve(input: []const u8, allocator: mem.Allocator) anyerror!u32 {
     var buf: [2048]u8 = undefined;
     var games = std.ArrayList(Game).init(allocator);
     while (try in_stream.readUntilDelimiterOrEof(&buf, '\n')) |line| {
-        std.debug.print("line: {s}\n", .{line});
         const game = try parse_line(allocator, line);
         try games.append(game);
         std.debug.print("game: {s}\n", .{game});
     }
-
     defer games.deinit();
     defer for (games.items) |game| game.picks.deinit();
 
-    return 0;
+    const possible_games = try filter_possible_games(allocator, request, games);
+    defer possible_games.deinit();
+
+    //defer for (possible_games.items) |game| game.picks.deinit();
+    const result = count_ids(possible_games);
+    std.debug.print("Result: {x}\n", .{result});
+    return result;
 }
 
 const testing = std.testing;
 const expect = testing.expect;
+const expectEqual = testing.expectEqual;
 const test_allocator = std.testing.allocator;
+
+test "solve day1" {
+    const received = try solve("input.csv", test_allocator, Request{ .r = 12, .g = 13, .b = 14 });
+    try expectEqual(received, 2720); // todo: not sure why swapping won't compile.
+}
+
 test "solve example" {
-    const received = try solve("example.csv", test_allocator);
-    try expect(received == 8);
+    const received = try solve("example.csv", test_allocator, Request{ .r = 12, .g = 13, .b = 14 });
+    try expectEqual(received, 8); // todo: not sure why swapping won't compile.
 }
 test "parse_single_pick" {
     try expect(std.meta.eql(try parse_single_pick("3 green"), Temp{ .color = CubeColor.green, .quantity = 3 }));
     try expect(std.meta.eql(try parse_single_pick("3 red"), Temp{ .color = CubeColor.red, .quantity = 3 }));
     try expect(std.meta.eql(try parse_single_pick("3 blue"), Temp{ .color = CubeColor.blue, .quantity = 3 }));
+}
+
+test "test count ids" {
+    var games = std.ArrayList(Game).init(test_allocator);
+    try games.append(Game{ .game_id = 1, .picks = std.ArrayList(GamePick).init(test_allocator) });
+    try games.append(Game{ .game_id = 1, .picks = std.ArrayList(GamePick).init(test_allocator) });
+    try games.append(Game{ .game_id = 2, .picks = std.ArrayList(GamePick).init(test_allocator) });
+    defer games.deinit();
+    defer for (games.items) |game| game.picks.deinit();
+    const res = count_ids(games);
+    try expect(res == 4);
 }
 
 test "parse pick" {
