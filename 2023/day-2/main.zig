@@ -119,7 +119,6 @@ fn solve(input: []const u8, allocator: mem.Allocator, request: Request) anyerror
     while (try in_stream.readUntilDelimiterOrEof(&buf, '\n')) |line| {
         const game = try parse_line(allocator, line);
         try games.append(game);
-        std.debug.print("game: {s}\n", .{game});
     }
     defer games.deinit();
     defer for (games.items) |game| game.picks.deinit();
@@ -129,8 +128,41 @@ fn solve(input: []const u8, allocator: mem.Allocator, request: Request) anyerror
 
     //defer for (possible_games.items) |game| game.picks.deinit();
     const result = count_ids(possible_games);
-    std.debug.print("Result: {x}\n", .{result});
     return result;
+}
+
+fn solve2(input: []const u8, allocator: mem.Allocator) anyerror!u32 {
+    var file = try std.fs.cwd().openFile(input, .{});
+    defer file.close();
+
+    var buf_reader = std.io.bufferedReader(file.reader());
+    const in_stream = buf_reader.reader();
+    var buf: [2048]u8 = undefined;
+    var games = std.ArrayList(Game).init(allocator);
+    while (try in_stream.readUntilDelimiterOrEof(&buf, '\n')) |line| {
+        const game = try parse_line(allocator, line);
+        try games.append(game);
+    }
+    defer games.deinit();
+    defer for (games.items) |game| game.picks.deinit();
+
+    var ret: u32 = 0;
+    for (games.items) |game| {
+        ret += compute_cube(game);
+    }
+    return ret;
+}
+
+fn compute_cube(game: Game) u32 {
+    var r: u32 = 0;
+    var g: u32 = 0;
+    var b: u32 = 0;
+    for (game.picks.items) |pick| {
+        r = @max(pick.r, r);
+        g = @max(pick.g, g);
+        b = @max(pick.b, b);
+    }
+    return r * g * b;
 }
 
 const testing = std.testing;
@@ -138,9 +170,22 @@ const expect = testing.expect;
 const expectEqual = testing.expectEqual;
 const test_allocator = std.testing.allocator;
 
-test "solve day1" {
+test "solve part1" {
     const received = try solve("input.csv", test_allocator, Request{ .r = 12, .g = 13, .b = 14 });
     try expectEqual(received, 2720); // todo: not sure why swapping won't compile.
+}
+test "solve part2" {
+    const received = try solve2("input.csv", test_allocator);
+    try expectEqual(received, 71535); // todo: not sure why swapping won't compile.
+}
+test "compute cube" {
+    var picks = std.ArrayList(GamePick).init(test_allocator);
+    try picks.append(GamePick{ .r = 4, .g = 4, .b = 2 });
+    const game = Game{ .game_id = 1, .picks = picks };
+    defer picks.deinit();
+
+    const received = compute_cube(game);
+    try expectEqual(received, 4 * 4 * 2);
 }
 
 test "solve example" {
