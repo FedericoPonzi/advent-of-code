@@ -8,5 +8,6 @@ For this year, my goals are:
 ## Solutions
 1. For day 1 I've implemented a simple programming language called "Bina" and wrote a program to solve day 1 part 1: https://github.com/FedericoPonzi/bina/blob/main/day1.bina
 2. Zig
+3. Haskell
 
 
