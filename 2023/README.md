@@ -10,5 +10,5 @@ For this year, my goals are:
 2. Zig
 3. Haskell
 4. Bash
-
+5. Kotlin
 
