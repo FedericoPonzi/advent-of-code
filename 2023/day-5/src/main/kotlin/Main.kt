@@ -12,6 +12,19 @@ fun getDestination(value: Long, mapping: java.util.ArrayList<Pair<LongRange, Lon
 }
 val sections = 7 // 7 sections
 
+fun getDestinationRange(value: List<LongRange>, mapping: java.util.ArrayList<Pair<LongRange, LongRange>>): List<LongRange> {
+    val ret : MutableList<LongRange> = mutableListOf()
+    for(v in value) {
+        for((source,dest) in mapping) {
+            if(source.start <= v.start) {
+
+            }
+        }
+    }
+    return ret
+}
+
+
 fun parse(input: String): Pair<List<Long>, HashMap<Int, ArrayList<Pair<LongRange,LongRange>>>> {
     val content = File(input).readLines()
     val seeds = content[0].split(": ")[1].split(" ").map(String::toLong)
@@ -52,4 +65,38 @@ fun solve1(input: String): Long {
         minimum = min(minimum, dest)
     }
     return minimum
+}
+
+fun solve2(input: String): Long {
+    val parsed = parse(input);
+    val (_first, second) = parsed
+    var seeds = parseSeeds(input)
+    println(seeds)
+    var minimum = Long.MAX_VALUE;
+    for(seedRange in seeds) {
+        var section = 0
+        var dest : List<LongRange> = listOf()
+        while (section < sections) {
+            dest = getDestinationRange(dest, second[section]!!);
+            section += 1;
+        }
+
+        //minimum = min(minimum, dest)
+
+    }
+    return minimum
+}
+
+fun parseSeeds(input: String): List<LongRange>{
+    val content = File(input).readLines()
+    val seeds = content[0].split(": ")[1].split(" ").map(String::toLong)
+    val ret : MutableList<LongRange> = mutableListOf()
+    var index = 0;
+    while (index < seeds.size)  {
+        ret.add(seeds[index]..seeds[index]+seeds[index+1])
+        index += 2;
+    }
+    ret.sortBy { t -> t.first }
+    println(ret)
+    return ret
 }

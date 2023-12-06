@@ -11,4 +11,4 @@ For this year, my goals are:
 3. Haskell
 4. Bash
 5. Kotlin
-
+6. Dafny

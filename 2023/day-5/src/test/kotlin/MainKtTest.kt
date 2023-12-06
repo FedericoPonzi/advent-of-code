@@ -8,4 +8,9 @@ class MainKtTest {
         assertEquals(35L, solve1("example.txt") )
         assertEquals(289863851, solve1("input.txt"))
     }
+    @Test
+    fun solve2() {
+        assertEquals(46L, solve2("example.txt"))
+        assertEquals( 289863851, solve2("input.txt"))
+    }
 }
