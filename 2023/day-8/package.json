@@ -1,0 +1,16 @@
+{
+  "name": "day-8",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "jest --forceExit --coverage --verbose"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.6.3",
+    "@jest/types": "^29.6.3"
+  }
+}

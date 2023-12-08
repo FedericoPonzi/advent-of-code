@@ -13,3 +13,4 @@ For this year, my goals are:
 5. Kotlin
 6. Dafny
 7. Scala
+8. Javascript
