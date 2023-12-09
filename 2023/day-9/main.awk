@@ -6,7 +6,12 @@ BEGIN {
 
 {
   arr_len = split($0, fields, " ");
-  total += process_data(fields, arr_len);
+  if(part == "2") {
+    reverseArray(fields, new_fields)
+    total += process_data(new_fields, arr_len);
+  } else {
+    total += process_data(fields, arr_len);
+  }
 }
 
 function process_data(data, data_len) {
@@ -23,6 +28,13 @@ function process_data(data, data_len) {
   }
   return data[data_len] + process_data(data, data_len -1)
   
+}
+# function to reverse an array
+function reverseArray(inputArray, outputArray, len) {
+    len = length(inputArray);
+    for (i = len; i > 0; i--) {
+        outputArray[len - i + 1] = inputArray[i];
+    }
 }
 
 END {
