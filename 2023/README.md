@@ -15,3 +15,6 @@ For this year, my goals are:
 7. Scala
 8. Javascript
 9. Awk
+10. C
+
+
