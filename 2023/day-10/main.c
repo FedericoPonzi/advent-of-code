@@ -22,6 +22,7 @@ void load_graph(char *filename, int size, char *ret) {
         fseek(fp, 1, SEEK_CUR);
         row++;
     }
+   fclose(fp);
 }
 
 void print_maze(char *maze, int size) {
@@ -43,7 +44,7 @@ pair find_starter(char *maze, int size) {
         for (int k = 0; k < size; k++) {
             char c = *(maze + i * size + k);
             if (c == 'S') {
-                printf("Found c, y: %d, x: %d\n", i, k);
+                //printf("Found c, y: %d, x: %d\n", i, k);
                 pair ret = {.y = k, .x = i};
                 return ret;
             }
@@ -64,69 +65,51 @@ int run_maze(char *maze, int size, pair position, char starter_kind, int *maze_p
         }
         if (cur == 'F') {
             pair next = {.x = current.x, .y = current.y + 1};
-            if (memcmp(&next, &visited, sizeof(next))) {
-                visited = current;
-                current = next;
-            } else {
-                visited = current;
-                pair tmp = {.x = current.x + 1, .y = current.y};
-                current = tmp;
+            if (!memcmp(&next, &visited, sizeof(next))) {
+                next = (pair) {.x = current.x + 1, .y = current.y};
             }
+            visited = current;
+            current = next;
             cur = *(maze + current.x * size + current.y);
         } else if (cur == '-') {
             pair next = {.x = current.x, .y = current.y + 1};
-            if (memcmp(&next, &visited, sizeof(next))) {
-                visited = current;
-                current = next;
-            } else {
-                visited = current;
-                pair tmp = {.x = current.x, .y = current.y - 1};
-                current = tmp;
+            if (!memcmp(&next, &visited, sizeof(next))) {
+                next = (pair) {.x = current.x, .y = current.y - 1};
             }
+            visited = current;
+            current = next;
             cur = *(maze + current.x * size + current.y);
         } else if (cur == '|') {
             pair next = {.x = current.x + 1, .y = current.y};
-            if (memcmp(&next, &visited, sizeof(next))) {
-                visited = current;
-                current = next;
-            } else {
-                visited = current;
-                pair tmp = {.x = current.x - 1, .y = current.y};
-                current = tmp;
+            if (!memcmp(&next, &visited, sizeof(next))) {
+                next = (pair) {.x = current.x - 1, .y = current.y};
             }
+            visited = current;
+            current = next;
             cur = *(maze + current.x * size + current.y);
         } else if (cur == 'J') {
             pair next = {.x = current.x - 1, .y = current.y};
-            if (memcmp(&next, &visited, sizeof(next))) {
-                visited = current;
-                current = next;
-            } else {
-                visited = current;
-                pair tmp = {.x = current.x, .y = current.y - 1};
-                current = tmp;
+            if (!memcmp(&next, &visited, sizeof(next))) {
+                next = (pair) {.x = current.x, .y = current.y - 1};
             }
+            visited = current;
+            current = next;
             cur = *(maze + current.x * size + current.y);
         } else if (cur == '7') {
             pair next = {.x = current.x, .y = current.y - 1};
-            if (memcmp(&next, &visited, sizeof(next))) {
-                visited = current;
-                current = next;
-            } else {
-                visited = current;
-                pair tmp = {.x = current.x + 1, .y = current.y};
-                current = tmp;
+            if (!memcmp(&next, &visited, sizeof(next))) {
+                next = (pair) {.x = current.x + 1, .y = current.y};
             }
+            visited = current;
+            current = next;
             cur = *(maze + current.x * size + current.y);
         } else if (cur == 'L') {
             pair next = {.x = current.x - 1, .y = current.y};
-            if (memcmp(&next, &visited, sizeof(next))) {
-                visited = current;
-                current = next;
-            } else {
-                visited = current;
-                pair tmp = {.x = current.x, .y = current.y + 1};
-                current = tmp;
+            if (!memcmp(&next, &visited, sizeof(next))) {
+                next = (pair) {.x = current.x, .y = current.y + 1};
             }
+            visited = current;
+            current = next;
             cur = *(maze + current.x * size + current.y);
         } else {
             printf("unknown char found: '%c'\n", cur);
@@ -179,7 +162,7 @@ int solve2(char *filename, int size, char starter_kind) {
                 //printf("I ");
                 ret++;
             } else {
-          //      printf(". ");
+                //      printf(". ");
             }
         }
         //printf("\n");
@@ -193,12 +176,16 @@ int solve2(char *filename, int size, char starter_kind) {
 int main() {
     int ret;
     // the starters were found manually :)
-    printf("Received: %d, expected: 8.", solve("/home/fponzi/dev/advent-of-code/2023/day-10/example.txt", 5, 'F'));
-    printf("Received: %d, expected: 7030.", solve("/home/fponzi/dev/advent-of-code/2023/day-10/input.txt", 140, 'J'));
-    printf("Received: %d, expected: 4.", solve2("/home/fponzi/dev/advent-of-code/2023/day-10/example2-a.txt", 11, 'F'));
-    printf("Received: %d, expected: 8.", solve2("/home/fponzi/dev/advent-of-code/2023/day-10/example2-b.txt", 20, 'F'));
-    printf("Received: %d, expected: 10.",solve2("/home/fponzi/dev/advent-of-code/2023/day-10/example2-c.txt", 20, '7'));
-    printf("Received: %d, expected: 4.", solve2("/home/fponzi/dev/advent-of-code/2023/day-10/example2-d.txt", 10, '|'));
-    printf("Received: %d, expected: 285.", solve2("/home/fponzi/dev/advent-of-code/2023/day-10/input.txt", 140, 'J'));
+    printf("Received: %d, expected: 8.\n", solve("/home/fponzi/dev/advent-of-code/2023/day-10/example.txt", 5, 'F'));
+    printf("Received: %d, expected: 7030.\n", solve("/home/fponzi/dev/advent-of-code/2023/day-10/input.txt", 140, 'J'));
+    printf("Received: %d, expected: 4.\n",
+           solve2("/home/fponzi/dev/advent-of-code/2023/day-10/example2-a.txt", 11, 'F'));
+    printf("Received: %d, expected: 8.\n",
+           solve2("/home/fponzi/dev/advent-of-code/2023/day-10/example2-b.txt", 20, 'F'));
+    printf("Received: %d, expected: 10.\n",
+           solve2("/home/fponzi/dev/advent-of-code/2023/day-10/example2-c.txt", 20, '7'));
+    printf("Received: %d, expected: 4.\n",
+           solve2("/home/fponzi/dev/advent-of-code/2023/day-10/example2-d.txt", 10, '|'));
+    printf("Received: %d, expected: 285.\n", solve2("/home/fponzi/dev/advent-of-code/2023/day-10/input.txt", 140, 'J'));
     return 0;
 }
