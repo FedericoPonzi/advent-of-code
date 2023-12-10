@@ -1,30 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
-/**
- * 1. parse the map.
- * 2. start bfs, mark all the distances.
- * 3. find the highest distance.
- *
- *
- * @return
- */
-
-typedef enum {
-    North,
-    South,
-    East,
-    West
-} Direction;
-
-void load_graph(char *filename, int size, char *);
-
-
-/**
- *
- * @return "S" the start node.
- */
 
 void load_graph(char *filename, int size, char *ret) {
     FILE *fp = fopen(filename, "r");
@@ -73,36 +51,17 @@ pair find_starter(char *maze, int size) {
     }
 }
 
-
-int canGoDirection(char *maze, int size, pair pos, Direction dir) {
-    if (dir == North) {
-        const char final = *(maze + (pos.y - 1) * size + pos.x);
-        return pos.y - 1 >= 0 && (final == 'F' || final == '7' || final == '|');
-    }
-    if (dir == East) {
-        const char final = *(maze + (pos.y - 1) * size + pos.x);
-        return pos.y - 1 >= 0 && (final == 'J' || final == '7' || final == '-');
-    }
-}
-
-int getStarterKind(char *maze, int size, pair pos) {
-    if (canGoDirection(maze, size, pos, East)) {
-        printf("Can go east");
-    }
-}
-
-int run_maze(char *maze, int size, pair position, char starter_kind) {
+int run_maze(char *maze, int size, pair position, char starter_kind, int *maze_pipes) {
     char cur = starter_kind;
     pair visited = {.x = position.x, .y = position.y};
     pair current = {.x = position.x, .y = position.y};
     int ret = 0;
     while (cur != 'S') {
         ret++;
-        if(ret > size*size){
+        if (ret > size * size) {
             printf("current ret is greater than max length!?, %d", ret);
             exit(1);
         }
-        //printf("Searhing for next pipe, curr: %c (%d, %d) \n", cur, current.x, current.y);
         if (cur == 'F') {
             pair next = {.x = current.x, .y = current.y + 1};
             if (memcmp(&next, &visited, sizeof(next))) {
@@ -170,14 +129,13 @@ int run_maze(char *maze, int size, pair position, char starter_kind) {
             }
             cur = *(maze + current.x * size + current.y);
         } else {
-            printf("unknown char found: %c\n", cur);
-
+            printf("unknown char found: '%c'\n", cur);
             return 0;
         }
-        //printf("Next step: %c (%d, %d)\n", cur, current.x, current.y);
-
+        if (maze_pipes != NULL) {
+            *(maze_pipes + current.x * size + current.y) = 1;
+        }
     }
-    //printf("Found the end pipe!\n");
     return ret;
 }
 
@@ -185,16 +143,62 @@ int solve(char *filename, int size, char starter_kind) {
     char *maze = malloc(size * size);
     load_graph(filename, size, maze);
     pair p = find_starter(maze, size);
-    int ret = run_maze(maze, size, p, starter_kind);
+    int ret = run_maze(maze, size, p, starter_kind, NULL);
     free(maze);
-    return ret/2;
+    return ret / 2;
+}
+
+int solve2(char *filename, int size, char starter_kind) {
+    char *maze = malloc(size * size);
+    int *pipes_map = calloc(size * size, sizeof(int));
+    load_graph(filename, size, maze);
+    pair p = find_starter(maze, size);
+    run_maze(maze, size, p, starter_kind, pipes_map);
+    /*for (int i = 0; i < size; i++) {
+        for (int k = 0; k < size; k++) {
+            printf("%d ", *(pipes_map + i * size + k));
+        }
+        printf("\n");
+    }*/
+    int ret = 0;
+    for (int i = 0; i < size; i++) {
+        bool is_inside = false;
+        for (int k = 0; k < size; k++) {
+            int print_me = i == 7;
+            char target = *(maze + i * size + k);
+            int is_pipe_tile = *(pipes_map + i * size + k) == 1;
+            if (is_pipe_tile) {
+                //printf("P ");
+                if (target == 'S') {
+                    target = starter_kind;
+                }
+                if (target == '|' || target == 'J' || target == 'L') {
+                    is_inside = !is_inside;
+                }
+            } else if (is_inside) {
+                //printf("I ");
+                ret++;
+            } else {
+          //      printf(". ");
+            }
+        }
+        //printf("\n");
+    }
+
+    free(maze);
+    free(pipes_map);
+    return ret;
 }
 
 int main() {
     int ret;
-    ret = solve("/home/fponzi/dev/advent-of-code/2023/day-10/example.txt", 5, 'F');
-    printf("Received: %d, expected: 8.", ret);
-    ret = solve("/home/fponzi/dev/advent-of-code/2023/day-10/input.txt", 140, 'J');
-    printf("Received: %d, expected: 7030.", ret);
+    // the starters were found manually :)
+    printf("Received: %d, expected: 8.", solve("/home/fponzi/dev/advent-of-code/2023/day-10/example.txt", 5, 'F'));
+    printf("Received: %d, expected: 7030.", solve("/home/fponzi/dev/advent-of-code/2023/day-10/input.txt", 140, 'J'));
+    printf("Received: %d, expected: 4.", solve2("/home/fponzi/dev/advent-of-code/2023/day-10/example2-a.txt", 11, 'F'));
+    printf("Received: %d, expected: 8.", solve2("/home/fponzi/dev/advent-of-code/2023/day-10/example2-b.txt", 20, 'F'));
+    printf("Received: %d, expected: 10.",solve2("/home/fponzi/dev/advent-of-code/2023/day-10/example2-c.txt", 20, '7'));
+    printf("Received: %d, expected: 4.", solve2("/home/fponzi/dev/advent-of-code/2023/day-10/example2-d.txt", 10, '|'));
+    printf("Received: %d, expected: 285.", solve2("/home/fponzi/dev/advent-of-code/2023/day-10/input.txt", 140, 'J'));
     return 0;
 }
