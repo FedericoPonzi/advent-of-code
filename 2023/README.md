@@ -17,4 +17,5 @@ For this year, my goals are:
 9. Awk
 10. C
 11. PHP
+12. Ruby
 
