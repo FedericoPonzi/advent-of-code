@@ -18,4 +18,7 @@ For this year, my goals are:
 10. C
 11. PHP
 12. Ruby
+13. Python
+14. Groovy
+
 
