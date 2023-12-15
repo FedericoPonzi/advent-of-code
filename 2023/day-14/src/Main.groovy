@@ -19,7 +19,7 @@ static def solve(ArrayList<ArrayList<String>> l) {
                 res_row++;
             }
         }
-        res += res_row * (l.size()-row);
+        res += res_row * (l.size() - row);
     }
     return res;
 }
