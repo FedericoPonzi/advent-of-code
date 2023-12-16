@@ -21,4 +21,5 @@ For this year, my goals are:
 13. Python
 14. Groovy
 15. Ocaml
+16. Swift
 
