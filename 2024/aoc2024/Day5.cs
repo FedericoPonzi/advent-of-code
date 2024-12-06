@@ -36,21 +36,6 @@ public class Day5
         
         return res;
     }
-    public static bool verifyOrFixOrder(List<(int,int)> rules, List<int> pages, bool updated = false)
-    {
-        foreach (var (l, r) in rules)
-        {
-            var indexL = pages.IndexOf(l);
-            var indexR = pages.IndexOf(r);
-            if (indexL > indexR)
-            {
-                pages.Insert(indexL, r);
-                pages.Insert(indexR, l);
-                return verifyOrFixOrder(rules, pages, true);
-            }
-        }
-        return updated;
-    }
 
     public static List<int> TopologicalSort(List<int> pages, List<(int, int)> rules)
     {
